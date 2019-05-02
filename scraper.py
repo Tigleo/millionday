@@ -1,13 +1,15 @@
-import json
 import datetime
-import dateparser
+import json
 import urllib.request as request
+
+import dateparser
 from bs4 import BeautifulSoup
 
 today = datetime.datetime.now()
 today = today.strftime("%d_%m_%y")
 filename = "millionday"
 output_file = "{}_{}.json".format(filename, today)
+body = {}
 estrazioni = []
 response = request.urlopen("http://www.millionday.cloud/archivio-estrazioni.php")
 html_doc = response.read()
@@ -29,7 +31,8 @@ for tr in soup.findAll('tr'):
                 num.append(n.text)
         e['numeri'] = num
         estrazioni.append(e)
-json_data = json.dumps(estrazioni, indent=4, sort_keys=True)
+body['estrazioni'] = estrazioni
+json_data = json.dumps(body, indent=4, sort_keys=True)
 print(json_data)
 
 # Open the file with writing permission
