@@ -1,46 +1,38 @@
-import datetime
 import json
 import urllib.request as request
 
 import dateparser
 from bs4 import BeautifulSoup
 
-today = datetime.datetime.now()
-today = today.strftime("%d_%m_%y")
-filename = "millionday"
-output_file = "{}_{}.json".format(filename, today)
-body = {}
-estrazioni = []
-response = request.urlopen("http://www.millionday.cloud/archivio-estrazioni.php")
-html_doc = response.read()
-soup = BeautifulSoup(html_doc, 'html.parser')
+from utils.utility import *
 
-for tr in soup.findAll('tr'):
 
-    if not tr.findChildren('th'):
-        e = {}
-        date_str = tr.span.text
+def scrape(file, date):
+    output_file = make_filename(file, date, file_date_pattern)
 
-        parsed = dateparser.parse(date_str, languages=['it'])
-        date_time = parsed.strftime("%d/%m/%Y")
-        e['data'] = date_time
+    body = {}
+    estrazioni = []
+    response = request.urlopen(url)
+    html_doc = response.read()
+    soup = BeautifulSoup(html_doc, 'html.parser')
 
-        num = []
-        for n in tr.findAll('td'):
-            if not n.findChildren('span'):
-                num.append(n.text)
-        e['numeri'] = num
-        estrazioni.append(e)
-body['estrazioni'] = estrazioni
-json_data = json.dumps(body, indent=4, sort_keys=True)
-print(json_data)
+    for tr in soup.findAll('tr'):
 
-# Open the file with writing permission
-file = open(output_file, 'w')
+        if not tr.findChildren('th'):
+            e = {}
+            date_str = tr.span.text
 
-# Write a line to the file
-file.write(json_data)
+            parsed = dateparser.parse(date_str, languages=['it'])
+            date_time = parsed.strftime(date_pattern)
+            e['data'] = date_time
 
-# Close the file
-file.close()
+            num = []
+            for n in tr.findAll('td'):
+                if not n.findChildren('span'):
+                    num.append(n.text)
+            e['numeri'] = num
+            estrazioni.append(e)
+    body['estrazioni'] = estrazioni
 
+    with open(output_file, 'w+') as outfile:
+        json.dump(body, outfile, indent=4, sort_keys=True)
