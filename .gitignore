@@ -1,2 +1,5 @@
 venv/
 .idea/
+.iml
+misc.xml
+workspace.xml
