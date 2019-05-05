@@ -5,3 +5,5 @@ filename_pattern = "{}_{}.json"
 url = "http://www.millionday.cloud/archivio-estrazioni.php"
 
 date_pattern = "%d/%m/%Y"
+
+prizes = {2: 2, 3: 50, 4: 10 ** 3, 5: 10 ** 6}
