@@ -29,7 +29,7 @@ def scrape(file, date):
             num = []
             for n in tr.findAll('td'):
                 if not n.findChildren('span'):
-                    num.append(n.text)
+                    num.append(int(n.text))
             e['numeri'] = num
             estrazioni.append(e)
     body['estrazioni'] = estrazioni
