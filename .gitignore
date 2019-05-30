@@ -3,3 +3,4 @@ venv/
 .iml
 misc.xml
 workspace.xml
+*.json,
