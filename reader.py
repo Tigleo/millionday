@@ -17,8 +17,3 @@ def read(in_file) -> List[Estrazione]:
             estrazioni.append(e)
 
     return estrazioni
-
-
-def read_file_json(filename):
-    file = open(filename, "r")
-    return file.read()
